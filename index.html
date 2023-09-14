@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>index</title>
+    
+    <link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+        <nav >
+                <div class="scrollmenu">
+                    <a href="index.html" style="float: left;">
+                        <img src="./ssss.jpg"  height="25" alt="" >
+                    </a>
+                    <a  href="./FIFO.html">FIFO</a>
+                    <a  href="./LRU.html">LRU</a>
+                    <a  href="./OPTIMUM.html">OPTIMUM</a>
+                </div>
+            </nav>
+            <br>
+            <article>
+                    <img src="./ss.jpg" alt="" class="ar">
+                </article>
+                <section id="about">
+                        <div class="container">
+                            <header class="section-header" id="hh">
+                                <h3>Nous définissons dans ce qui suit quelques <span>algorithmes de remplacement de page </span> </h3>
+            
+            
+                                <div class="row align-items-center">
+                                    <p>
+                                        Les pages chargées dans la mémoire physiques sont remplacées par de nouvelles pages du swap en fonction des besoins d'exécution. <br> Le SE choisit quelle page doit être enlevée et la remplace par celle qui est demandée Il
+                                        est préférable de ne pas choisir une page<br> souvent utilisée sinon il faudra la recharger bientôt Ceci nécessite une gestion des pages et un algorithme de remplacement de pages.<br>
+                                        <br>
+                                    </p>
+                                </div>
+                                <br><br>
+                                    <a href="http://deptinfo.cnam.fr/Enseignement/CycleA/AMSI/exercices_systemes/physiq18.htm" target="_blank"><label for="" style="margin-left: 50px;">evaluation...</label> </a>
+                                    <a href="https://www.univ-orleans.fr/lifo/Members/Mirian.Halfeld/Cours/SEBlois/SE2007-GestionMemo.pdf" target="_blank"><label for="" style="margin-left: 50px;">More...</label> </a>
+                                </header>
+                        </div>
+                        
+                    </section>
+                <aside>
+                        <ul>
+                            <li>
+                                <h4 style="font-weight: 600">FIFO :(First in –First out</h2>
+                                    <p >La page la plus ancienne est la
+                                            victime <br> (celle qui a été placé en mémoire  depuis <br> le
+                                            plus long temps).  <br>Cet algorithme est très simple <br> à
+                                            implémenter!
+                                        </p>
+                            </li>
+                            <li>
+                                <h4 style="font-weight: 600">LRU:Last recently Used </h4>
+                                <p>Il consiste à choisir comme victime <br> le cadre qui n'a pas été
+                                        référencé <br> depuis le plus longtemps.
+                                    </p>
+                            </li>
+                            <li>
+                                <h4 style="font-weight: 600">optimal</h4>
+                                <p>La règle de remplacement est «remplacer <br>
+                                     la page qui ne sera pas utilisée 
+                                        pendant<br> la durée la plus longue» <br>
+                                        Malheureusement, cet algorithme <br> nécessiterait  de
+                                        connaître l'avenir. 
+                                    </p>
+                            </li>
+                        </ul>
+                </aside>
+                
+               
+</body>
+</html>

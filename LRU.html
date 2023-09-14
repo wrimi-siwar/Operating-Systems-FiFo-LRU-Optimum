@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LRU</title>
+
+    <link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script type="text/javascript">
+        function isempty(mat, col, nbr_rows) {
+            var res = -1;
+            if (col == 0) {
+                return 1;
+            } else {
+                for (var i = 0; i <= nbr_rows; i++) 
+                {
+                    if (mat[i][col - 1] == null) {
+                        res = i;
+                        break;
+                    }
+                }
+                return res;
+            }
+        }
+        function isnum($valeur)
+{
+  var checkOK = "0123456789";
+  var allValid = true;
+  var decPoints = 0;
+  var allNum = "";
+
+  for ( i = 0 ;  i < $valeur.length ;  i++ ) 
+  {
+    ch = $valeur.charAt(i);
+    for ( j = 0 ;  j < checkOK.length ;  j++ ) 
+      if ( ch == checkOK.charAt(j) ) 
+        break;
+      if ( j == checkOK.length ) 
+      {
+        allValid = false;
+        break;
+      }
+        allNum += ch;
+    }
+  if ( !allValid ) 
+  {
+    //alert("Ne tapez que des chiffres dans les champs !");
+    return (false);
+  }
+}
+        function find(mat, col, nbr_rows) {
+            var res = -1;
+            if (col == 0) {
+                return res;
+            } else {
+                for (var i = 1; i <= nbr_rows; i++) {
+                    if (mat[i][col - 1] == mat[0][col]) {
+                        res = i;
+                        break;
+                    }
+                }
+                return res;
+            }
+        }
+
+        function maximum(histo) {
+            max = 0;
+            max_index = 0;
+            for (var i = 0; i < histo.length; i++) {
+                     if (histo[i] > max) {
+                    max = histo[i];
+                    max_index = i;
+                }
+            }
+            return max_index;
+        }
+
+        function rempliMat() {
+            var nbr_rows = document.getElementById('rows').value;
+            var nbr_cols = document.getElementById('cols').value.length;
+            var liste = document.getElementById('cols').value;
+            var tab_histo = [];
+            if(isnum(liste)==false || isnum(nbr_rows)==false)
+            {
+                alert("Ne tapez que des chiffres dans les champs !");
+            }
+            else{
+            for (var i = 0; i < nbr_rows; i++) {
+                tab_histo[i] = 0;
+            }
+
+            var mat = [];
+            for (var i = 0; i <= nbr_rows+1; i++) {
+                mat[i] = new Array(nbr_cols);
+            }
+
+            for (var j = 0; j < nbr_cols; j++) {
+                mat[0][j] = liste.charAt(j);
+            }
+            for (var i = 0; i < nbr_cols; i++) {
+                if (i != 0) {
+                    for (var j = 1; j <= nbr_rows; j++) {
+                        mat[j][i] = mat[j][i - 1];
+                    }
+                }
+                var x = find(mat, i, nbr_rows);
+                var y = isempty(mat, i, nbr_rows);
+                
+                if (x != -1) {
+                    for (var d = 0; d < nbr_rows; d++) {
+                        if (mat[d + 1][i] != null) {
+                            tab_histo[d]++;
+                        }
+                    }
+                    tab_histo[x - 1] = 1;
+                } else {
+                    if (y != -1) {
+                        mat[y][i] = mat[0][i];
+                        tab_histo[y - 1]++;
+                        for (var j = 1; j <= nbr_rows; j++) {
+                            if (j != y && mat[j][i] != undefined) {
+                                tab_histo[j - 1]++;
+                            }
+                        }
+                    } else {
+                        var max = maximum(tab_histo);
+                        
+                        mat[max + 1][i] = mat[0][i];
+                        tab_histo[max] = 1;
+                        for (var j = 0; j < nbr_rows; j++) {
+                            if (j != max - 1 && mat[j + 1][i] != undefined) {
+                                tab_histo[j]++;
+                            }
+                        }
+                    }
+                }
+                defpag = 1;
+                for (var l = 0; l <= nbr_rows; l++) {
+                    if (mat[0][i] == mat[l][i - 1]) {
+                        defpag = 0;
+                    }
+                }
+                if (defpag == 1) {
+                    mat[nbr_rows + 1][i] = "d";
+                }
+            }
+            for (var i = 1; i <= nbr_rows+1; i++)
+            {
+                for (var j = 0; j < nbr_cols; j++)
+                {
+                   if(mat[i][j]==undefined)
+                   {
+                       mat[i][j]="<br>";
+                   }
+                }  
+            }
+            return mat;
+            }
+        }
+
+        function insertTable() {
+            var nbr_rows = document.getElementById('rows').value;
+            var nbr_cols = document.getElementById('cols').value.length;
+            var liste = document.getElementById('cols').value;
+            var theader = "<table id='table1' width =" + 550 + "px border='1'>";
+            var tbody = "";
+
+            var mat = rempliMat();
+
+            for (var j = 0; j < nbr_cols; j++) {
+                theader += "<th> " + mat[0][j] + " </th>";
+            }
+
+            for (var i = 1; i <= nbr_rows; i++) {
+                tbody += "<tr>";
+                for (var j = 0; j < nbr_cols; j++) {
+                    tbody += "<td> " + mat[i][j]
+                    tbody += "</td>";
+                }
+                tbody += "</tr>";
+            }
+            tbody += "<tr>";
+            for (var j = 0; j < nbr_cols; j++) {
+                tbody += "<td> " + mat[nbr_rows + 1][j]
+                tbody += "</td>";
+            }
+            tbody += "</tr><br/>";
+            var tfooter = "</table>";
+            document.getElementById('wrapper').innerHTML = theader + tbody + tfooter;
+        }
+        function insertTable1() {
+            var nbr_rows = document.getElementById('rows').value;
+            var nbr_cols = document.getElementById('cols').value.length;
+            var liste = document.getElementById('cols').value;
+            var theader = "<table  width ="+550 +"px>";
+            var tbody = "";
+
+            var mat = rempliMat();
+            for (var j = 0; j < nbr_cols; j++) {
+            console.log(mat[nbr_rows + 1][i] );}
+            for (var j = 0; j < nbr_cols; j++) {
+                theader += "<th>" + mat[0][j] + " </th>";
+            }
+            for (var i = 1; i <= nbr_rows; i++) 
+            {
+                tbody += "<tr>";
+               
+                    tbody += "<td>" + mat[i][0]
+                    tbody += "</td>";
+            
+            tbody += "</tr>";
+            }
+            tbody += "<tr>";
+               
+              
+       
+            tbody += "</tr></br>";
+            var tfooter = "</table>";
+            
+        
+            document.getElementById('wrapper').innerHTML = theader+ tbody +tfooter;
+            
+            var MesLignes = document.getElementsByTagName("tr");
+            
+        var l = MesLignes.length;
+        console.log(l)
+            var j = 1; //  set your counter to 1
+            function myLoop() { //  create a loop function
+                setTimeout(function() { //  call a 3s setTimeout when the loop is called
+                    for (var i = 1; i <l-1; i++) {
+                        
+                        var newCell = MesLignes[i].insertCell(j);
+                        newCell.innerHTML = mat[i][j];
+                    }
+                    j++; //  increment the counter
+                    if (j < nbr_cols) { //  if the counter < 10, call the loop function
+                        myLoop(); //  ..  again which will trigger another 
+                    } //  ..  setTimeout()
+                }, 2000)
+            }
+            var k=0;
+            function myLoop1() { //  create a loop function
+                setTimeout(function() { //  call a 3s setTimeout when the loop is called
+                    
+
+                        
+                        var newCell = MesLignes[l-1].insertCell(k);
+                        newCell.innerHTML = mat[nbr_rows+1][k];
+                       
+                    
+                        k++; //  increment the counter
+                        if (k < nbr_cols) { //  if the counter < 10, call the loop function
+                        myLoop1(); //  ..  again which will trigger another 
+                      
+                    } //  ..  setTimeout()  
+                }, 2000)
+            }
+            myLoop(); //  start the loop
+            var v1=setTimeout(myLoop1,2000*(nbr_cols-1));
+        }
+         
+        
+    </script>
+
+</head>
+
+<body>
+   
+    <nav >
+            <div class="scrollmenu">
+                <a href="./index.html" style="float: left;">
+                    <img src="./ssss.jpg"  height="25" alt="" >
+                </a>
+                <a  href="./FIFO.html">FIFO</a>
+                <a  href="./LRU.html">LRU</a>
+                <a  href="./OPTIMUM.html">OPTIMUM</a>
+            </div>
+        </nav>
+        <br>
+        <article>
+                <img src="./ss.jpg" alt="" class="ar">
+            </article>
+            <article style="margin-left: 15px;">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <br><br>
+                                <p style="font-weight: 600">les cadres de pages :<input type="text"  name="rows" id="rows"></p>
+                                 <p style="font-weight: 600">La liste des références :<input type="text"  name="cols" id="cols" /></p>
+                                     
+                                        
+                            </div>
+                            <div id="wrapper" class="col-lg-6"></div>
+                             <div class="col-lg-2">
+                                    <br> <br> <br>
+                                 <button class="bt" type="button" onclick="insertTable()">Complete </button>
+                                 <br>
+                                <button class="bt" type="button" onclick="insertTable1()">Pas A Pas</button>
+                            </div>   
+                        </div>
+                    </div>      
+                </article>
+            
+
+
+</body>
+
+</html>
